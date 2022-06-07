@@ -14,8 +14,25 @@ server.get('/api/users', (request, response) => {
         .catch(error => {
             response.status(500).json({
                 message: 'The users information could not be retrieved'
-            })
+            });
+        });
+});
+
+server.get('/api/users/:id', (request, response) => {
+    Users.findById(request.params.id)
+        .then(user => {
+            if (user === undefined) {
+                response.status(404).json({
+                    message: 'The user with the specified ID does not exist'
+                });
+            }
+            response.json(user);
         })
-})
+        .catch(error => {
+            response.status(500).json({
+                message: 'The user information could not be retrieved'
+            });
+        });
+});
 
 module.exports = server; // EXPORT YOUR SERVER instead of {}
